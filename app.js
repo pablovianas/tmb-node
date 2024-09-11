@@ -18,6 +18,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 const app = express();
 
+
 app.get('/tmb', async (req, res) => {
   let browser;
   // Inicia o browser
@@ -39,7 +40,7 @@ app.get('/tmb', async (req, res) => {
     // Navega até a página de login
     await page.goto('https://produtor.tmbeducacao.com.br/', { waitUntil: 'networkidle2' });
 
-    sleep(5000);
+    await sleep(3000);
 
     await page.screenshot({ path: 'tmb.png', fullPage: true })
 
@@ -50,7 +51,7 @@ app.get('/tmb', async (req, res) => {
     sleep(5000);
     await page.screenshot({ path: 'tmb2.png', fullPage: true })
     await page.type('#senha', process.env.TMB_PASS);
-    
+
 
     //Submete o formulário
     await Promise.all([
@@ -58,12 +59,12 @@ app.get('/tmb', async (req, res) => {
       page.waitForNavigation({ waitUntil: 'networkidle2' }),
     ]);
 
-    
-    
+
+
     // Navega até a página de transações
     await page.goto('https://produtor.tmbeducacao.com.br/dashboard/transacoes', { waitUntil: 'networkidle2' });
-    
-    await sleep(50000);
+
+    await sleep(30000);
     await page.screenshot({ path: 'tmb3.png', fullPage: true })
 
 
@@ -75,7 +76,7 @@ app.get('/tmb', async (req, res) => {
       el => el.innerText
     );
 
-    await sleep(20000);
+    await sleep(10000);
     await page.screenshot({ path: 'tmb4.png', fullPage: true })
 
 
