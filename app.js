@@ -116,7 +116,8 @@ app.get('/obter-token', async (req, res) => {
     // Preenche o formulário de login
     await page.type('#login', process.env.TMB_USER);
 
-    sleep(5000);
+    await sleep(3000);
+    
     await page.type('#senha', process.env.TMB_PASS);
 
     //Submete o formulário
@@ -127,11 +128,15 @@ app.get('/obter-token', async (req, res) => {
 
     const cookies = await page.cookies();
 
-    cookies.filter(cookie => cookie.name === 'tmb.token').map(cookie => {
-      res.status(200).json({ token: cookie.value });
+    const authToken = cookies.filter(cookie => cookie.name === 'tmb.token').map(cookie => {
+      return cookie.value;
     });
 
-  
+    res.status(200).json({ 
+      message: 'Token obtido com sucesso',
+      authToken: authToken[0] 
+    });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
